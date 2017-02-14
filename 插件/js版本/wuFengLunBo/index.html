@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无缝轮播</title>
+	<style type="text/css">
+		*{margin:0; padding:0;}
+		#container{width:605px; height:284px; border:1px solid black; position:relative; margin:100px auto; overflow:hidden;}
+		.box {height:284px; list-style:none; position:absolute; top:0; left:0;}
+		li { width:605px; height:284px; float:left; cursor: pointer}
+		.nav {width:100%; height:20px; padding:5px 0; position:absolute; bottom:0; background:black;}
+		.nav div {width:20px; height:20px; border-radius:10px; background:white; margin-left:10px; float:left; cursor: pointer;}
+		.nav div.active {background:red;}
+		.prev, .next {width:50px; height:50px; position:absolute; top:0; bottom:0; margin:auto 0; background:black; cursor: pointer; font:50px/50px "宋体"; color:white; text-align: center; opacity: 0.4;}
+		.next {right:0px;}
+	</style>
+
+	<script type="text/javascript" src="js/move.js"></script>
+	<script type="text/javascript">
+		window.onload = function(){
+			var oContainer = document.getElementById("container");
+				oUl = getByClass(oContainer, "box")[0],
+				aLi = oUl.getElementsByTagName("li"), // 获取所有装轮播图片的 li 盒子
+				oNav = getByClass(oContainer, "nav")[0],
+				aNav = oNav.getElementsByTagName("div");
+				oPrev = getByClass(oContainer, "prev")[0],
+				oNext = getByClass(oContainer, "next")[0],
+				len = aLi.length, // li 的个数
+				// liWidth = aLi[0].offsetWidth, // 每个 li 盒子的宽度
+				oFirst = aLi[0].cloneNode(true), // 复制第一张图片
+				oLast = aLi[len - 1].cloneNode(true), // 复制最后一张图片
+				iNow = 1;//运动到的位置
+			// 将第一张图片追加到末尾
+			oUl.appendChild(oFirst);
+			// 将最后一张图片添加到头部
+			oUl.insertBefore(oLast, aLi[0]);
+			// 修改 len 值
+			len += 2;
+			// 设置 #box 宽度
+			oUl.style.width = aLi[0].offsetWidth * len + "px";
+			// 初始化显示索引为 1 的图片
+			oUl.style.left = -aLi[0].offsetWidth + "px";
+
+			autoPlay();
+			function autoPlay() {
+				clearInterval(oContainer.timer);
+				// 自动轮播切换
+				oContainer.timer = setInterval(function() {
+					iNow++;
+					// 确定iNow为现在要展示的那张
+					if (iNow == len) {
+						oUl.style.left = -aLi[0].offsetWidth + "px";
+						iNow = 2;//len-1下一张
+					}
+					tab();
+				}, 2000);
+			}
+
+			// 上一页
+			oPrev.onclick = function(){
+				iNow--;
+				// 确定iNow为现在要展示的那张
+				if (iNow == -1) {
+					oUl.style.left = -aLi[0].offsetWidth * (len - 2) + "px";
+					iNow = len - 3;
+				}
+				tab();
+			};
+			oPrev.onmousedown = function() {//阻止按下选中一片bug
+				return false;
+			}
+
+			// 下一页
+			oNext.onclick = function() {
+				iNow++;
+				// 确定iNow为现在要展示的那张
+				if (iNow == len) {
+					oUl.style.left = -aLi[0].offsetWidth + "px";
+					iNow = 2;//len-1下一张
+				}
+				tab();
+			};
+			oNext.onmousedown = function() {//阻止按下选中一片bug
+				return false;
+			}
+			//7 1 2 3 4 5 6 1
+			//5 0 1 2 3 4 5 0
+			for(var i = 0; i<aNav.length; i++) {
+				aNav[i].index = i;
+				aNav[i].onclick = function(){
+					// 改变iNow运动
+					// iNow        0      1    2   3   4   5   6     7
+					//navIndex            0    1   2   3   4   5   
+					//前后增加两张图，是因为有++等无缝，选项卡只在选项卡切换   
+					iNow = this.index+1;
+					tab();
+				}
+			}
+
+			oContainer.onmouseover = function() {
+				clearInterval(oContainer.timer);
+			}
+			oContainer.onmouseout = function() {
+				autoPlay();
+			}
+			function tab(){
+					// 修改小圆点的样式
+					for (var i = 0; i < aNav.length; i++){
+						aNav[i].className = "";
+					}
+					// 找出当前图片对应小圆点的索引
+					var navIndex = 0;
+					//  0  1  2  3  4  ...  len-2  len-1
+					//     0  1  2  3  ...  len-3
+					if(iNow==0) {
+						// len-2-1  原来数组最后一个
+						// 原来iNow=index最后一个为len-1
+						// 现在多了两个len-3
+						navIndex = len-3;
+					} else if(iNow==len-1) {
+						navIndex = 0;
+					} else {
+						navIndex = iNow-1;
+					}
+					aNav[navIndex].className = "active";
+					//iNow  0  1     2         n
+					//iLeft 0 -1len  -2len     -nlen
+					var iLeft = -aLi[0].offsetWidth * iNow;
+					startMove(oUl, {"left":iLeft})
+			}
+		}
+		function $(id) {
+			return document.getElementById(id);
+		}
+		function getByClass(oParent, sClass) {
+			var aEle = oParent.getElementsByTagName("*");
+			var aResult = [];
+			for(var i=0; i<aEle.length; i++) {
+				if(aEle[i].className == sClass) {
+					aResult.push(aEle[i]);
+				}
+			}
+			return aResult;
+		}
+	</script>
+</head>
+<body>
+	<div id="container">
+		<ul class="box">
+			<li><img src="img/ad1.jpg" height="284" width="605"></li>
+			<li><img src="img/ad2.jpg" height="284" width="605"></li>
+			<li><img src="img/ad3.jpg" height="284" width="605"></li>
+			<li><img src="img/ad4.jpg" height="284" width="605"></li>
+			<li><img src="img/ad5.jpg" height="284" width="605"></li>
+			<li><img src="img/ad6.jpg" height="284" width="605"></li>
+		</ul>
+		<div class="nav">
+			<div class="active"></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="prev"><</div>
+		<div class="next">></div>
+	</div>
+</body>
+</html>

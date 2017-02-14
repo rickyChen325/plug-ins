@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>元素根据滚动条位置自定义吸顶（原来在页面中）</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		div{
+			width: 1200px;
+			margin: 0 auto;
+			text-align: center;			
+		}
+		#fix{
+			width: 100%;
+			height: 60px;
+			background: rgba(0, 0 , 0, 0.4);
+		}
+	</style>
+</head>
+<body>
+	<div id="header">
+		<p>header</p>
+		<p>header</p>
+		<p>header</p>
+		<p>header</p>
+		<p>header</p>
+		<p>header</p>
+	</div>
+	<div id="content1">
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+		<p>content1</p>
+	</div>
+	<div id="fix">吸顶菜单</div>
+	<div id="content2">
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+		<p>content2</p>
+	</div>
+	<script src="js/jquery-1.12.3.js"></script>
+	<script>
+		//放在外面
+		var iFixTop = $("#fix").offset().top;
+		$(window).scroll(function() {
+			var iScrollTop = $(this).scrollTop();
+			if(iScrollTop >= iFixTop) {
+				$("#fix").css({position: "fixed", top: 0});
+			} else {
+				$("#fix").css("position", "static");
+			}
+		})
+	</script>
+</body>
+</html>

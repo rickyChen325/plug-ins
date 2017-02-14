@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>无缝滚动</title>
+		<style>
+			* {margin:0; padding:0;}
+			.div {position:relative; border:1px solid black; width:680px; height:132px; margin:10px auto; overflow:hidden;}
+			.div ul {position:absolute; left:0; cursor: pointer;}
+			.div ul li {list-style:none; float:left; width:150px; height:112px; padding:10px;}
+			.div ul li img {width:150px; height: 112px;}
+		</style>
+		<script>
+			window.onload = function() {
+				// www.28.com无缝滚动，左右滚动
+				// 文字中奖，上下无缝滚
+				// 无缝滚动：1、无缝滚动
+				// 			 2、左右按钮
+				// 			 3、鼠标移上暂停
+				// 			 4、鼠标移出继续
+
+
+				var oDiv = document.getElementById("div1");
+				var oUl = oDiv.getElementsByTagName("ul")[0];
+				var aLi = oUl.getElementsByTagName("li");
+				var oBtnLeft = document.getElementsByTagName("a")[0];
+				var oBtnRight = document.getElementsByTagName("a")[1];
+
+				// 往左移，后面出现空白
+				// var timer = null;
+				// timer = setInterval(function() {
+				// 	oUl.style.left = oUl.offsetLeft - 1 + "px";
+				// }, 30)
+
+				// var timer = null;
+				// // oUl.innerHTML = oUl.innerHTML + oUl.innerHTML;
+				// oUl.innerHTML += oUl.innerHTML;
+				// // 会折行，ul宽度不够，算宽度
+				// oUl.style.width = aLi[0].offsetWidth*aLi.length + "px";
+				// timer = setInterval(function() {
+				// 	// 到了第二份跟第一份完全相同时，拉回
+				// 	if(oUl.offsetLeft<-oUl.offsetWidth/2) {
+				// 		oUl.style.left = 0;
+				// 	}
+				// 	oUl.style.left = oUl.offsetLeft - 3 + "px";
+				// }, 30)
+				
+				
+				// 左右都能跑
+				var iSpeed = -3;
+				oUl.innerHTML += oUl.innerHTML;
+				// // 会折行，ul宽度不够，算宽度
+				oUl.style.width = aLi[0].offsetWidth*aLi.length + "px";
+				autoPlay();
+				function autoPlay() {
+					clearInterval(oUl.timer);
+					oUl.timer = setInterval(function() {
+						// 到了第二份跟第一份完全相同时，拉回
+						if(oUl.offsetLeft<-oUl.offsetWidth/2) {
+							oUl.style.left = 0;
+						} else if(oUl.offsetLeft>0) {
+							oUl.style.left = -oUl.offsetWidth/2 + "px";
+						}
+						oUl.style.left = parseInt(getStyle(oUl, "left")) + iSpeed + "px";
+					}, 30)
+				}
+				oBtnLeft.onclick = function() {
+					iSpeed = -Math.abs(iSpeed);
+				}
+				oBtnRight.onclick = function() {
+					iSpeed = Math.abs(iSpeed);
+				}
+				oDiv.onmouseover = function() {
+					clearInterval(oUl.timer);
+				}
+				oDiv.onmouseout = function() {
+					autoPlay();
+				}
+			}
+			function getStyle(obj, name) {
+				if(window.getComputedStyle) {
+					return getComputedStyle(obj, null)[name];
+				} else {
+					return obj.currentStyle[name];
+				}
+			}
+ 		</script>
+	</head>
+	<body>
+		<a href="##">←</a>
+		<a href="##">→</a>
+		<div id="div1" class="div">
+			<ul>
+		    	<li><img src="img/1.jpg" /></li>
+		    	<li><img src="img/2.jpg" /></li>
+		    	<li><img src="img/3.jpg" /></li>
+		    	<li><img src="img/4.jpg" /></li>
+		    </ul>
+		</div>
+	</body>
+</html>

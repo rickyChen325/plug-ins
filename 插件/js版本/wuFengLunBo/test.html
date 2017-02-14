@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无缝轮播</title>
+	<style type="text/css">
+		*{margin:0; padding:0;}
+		#container{width:605px; height:284px; border:1px solid black; position:relative; margin:100px auto; overflow:hidden;}
+		.box {height:284px; list-style:none; position:absolute; top:0; left:0;}
+		li { width:605px; height:284px; float:left; cursor: pointer}
+		.nav {width:100%; height:20px; padding:5px 0; position:absolute; bottom:0; background:black;}
+		.nav div {width:20px; height:20px; border-radius:10px; background:white; margin-left:10px; float:left; cursor: pointer;}
+		.nav div.active {background:red;}
+		.prev, .next {width:50px; height:50px; position:absolute; top:0; bottom:0; margin:auto 0; background:black; cursor: pointer; font:50px/50px "宋体"; color:white; text-align: center; opacity: 0.4;}
+		.next {right:0px;}
+	</style>
+
+	<script type="text/javascript" src="js/move.js"></script>
+	<script type="text/javascript">
+		window.onload = function(){
+			var oDiv = $("container");
+			var oUl = getByClass(oDiv, "box")[0];
+			var aLi = oUl.getElementsByTagName("li");
+			var oNav = getByClass(oDiv, "nav")[0];
+			var aNav = oNav.getElementsByTagName("div");
+			var oPrev = getByClass(oDiv, "prev")[0];
+			var oNext = getByClass(oDiv, "next")[0];
+
+			var len = aLi.length;
+			//0 1 2 3 4 ... len-1
+			var iNow = 1;
+			var oFirst = aLi[0].cloneNode(true);
+			var oLast = aLi[len-1].cloneNode(true);
+			oUl.appendChild(oFirst);
+			oUl.insertBefore(oLast, aLi[0]);
+			len += 2;
+			oUl.style.width = aLi[0].offsetWidth*len + "px";
+			oUl.style.left = -aLi[0].offsetWidth + "px";
+
+			autoPlay();
+			function autoPlay() {
+				clearInterval(oDiv.timer);
+				oDiv.timer = setInterval(function() {
+					iNow++;
+					if(iNow==len) {
+						oUl.style.left = -aLi[0].offsetWidth + "px";
+						iNow = 2;
+					}
+					tab();
+				}, 1000)
+			}
+			oPrev.onclick = function() {
+				iNow--;
+				if(iNow==-1) {
+					oUl.style.left = -(len-2)*aLi[0].offsetWidth + "px";
+					iNow = len-3;
+				}
+				tab();
+			}
+			oNext.onclick = function() {
+				iNow++;
+				if(iNow==len) {
+					oUl.style.left = -aLi[0].offsetWidth + "px";
+					iNow = 2;
+				}
+				tab();
+			}
+			oDiv.onmouseover = function() {
+				clearInterval(oDiv.timer);
+			}
+			oDiv.onmouseout = function() {
+				autoPlay();
+			}
+			for(var i=0; i<aNav.length; i++) {
+				aNav[i].index = i;
+				aNav[i].onclick = function() {
+					// iNow 0 1 2 3 ... len-2 len-1
+					// nav    0 1 2 ... len-1
+					iNow = this.index + 1;  
+					tab();
+				}
+			}
+			function tab() {
+				for(var i=0; i<aNav.length; i++) {
+					aNav[i].className = "";
+				}
+				var navIndex = 0;
+				// iNow       0 1 2 3 4 5 ... len-3 len-2 len-1
+			  // navIndex len-3 0 1 2 3 4 ... len-4 len-3 0
+			  	if(iNow==0) {
+			  		navIndex = len-3;
+			  	} else if(iNow==len-1) {
+			  		navIndex = 0;
+			  	} else {
+			  		navIndex = iNow-1;
+			  	}
+			  	aNav[navIndex].className = "active";
+			  	// iNow 0 1 2 3 4 5 ... len-2 len-1
+			  	// left 0 1  -iNow*aLi[0].offsetWidth
+			  	startMove(oUl, {left: -iNow*aLi[0].offsetWidth});
+			}
+		}
+		function $(id) {
+			return document.getElementById(id);
+		}
+		function getByClass(oParent, sClass) {
+			var aResult = [];
+			var aEle = oParent.getElementsByTagName('*');
+			var re = new RegExp('\\b' + sClass + '\\b');
+			var i = 0;
+			for (i = 0; i < aEle.length; i++) {
+				if (re.test(aEle[i].className)) {
+					aResult.push(aEle[i]);
+				}
+			}
+			return aResult;
+		}
+	</script>
+</head>
+<body>
+	<div id="container">
+		<ul class="box">
+			<li><img src="img/ad1.jpg" height="284" width="605"></li>
+			<li><img src="img/ad2.jpg" height="284" width="605"></li>
+			<li><img src="img/ad3.jpg" height="284" width="605"></li>
+			<li><img src="img/ad4.jpg" height="284" width="605"></li>
+			<li><img src="img/ad5.jpg" height="284" width="605"></li>
+			<li><img src="img/ad6.jpg" height="284" width="605"></li>
+		</ul>
+		<div class="nav">
+			<div class="active"></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="prev"><</div>
+		<div class="next">></div>
+	</div>
+</body>
+</html>

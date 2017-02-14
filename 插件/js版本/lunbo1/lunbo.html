@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>图片轮播1</title>
+		<link rel="stylesheet" href="css/lunbo.css">
+		<script src="js/move.js"></script>
+		<script>
+			window.onload = function() {
+				var oDiv = document.getElementById("playimages");
+				var oBigUl = getByClass(oDiv, "big_pic")[0];
+				var oPrev = getByClass(oBigUl, "prev")[0];
+				var oNext = getByClass(oBigUl, "next")[0];
+				var oMarkLeft = getByClass(oBigUl, "mark_left")[0];
+				var oMarkRight = getByClass(oBigUl, "mark_right")[0];
+				var aBigLi = oBigUl.getElementsByTagName("li");
+				var oSmallDiv = getByClass(oDiv, "small_pic")[0];
+				var oSmallUl = oSmallDiv.getElementsByTagName("ul")[0];
+				var aSmallLi = oSmallDiv.getElementsByTagName("li");
+				var iNow = 0;//显示图片的下标
+				var iZindex = 2;
+
+				oPrev.onmouseover = oMarkLeft.onmouseover = function() {
+					 startMove(oPrev, {opacity: 100});
+				}
+				oPrev.onmouseout = oMarkLeft.onmouseout = function() {
+					 startMove(oPrev, {opacity: 0});
+				}
+				oNext.onmouseover = oMarkRight.onmouseover = function() {
+					 startMove(oNext, {opacity: 100});
+				}
+				oNext.onmouseout = oMarkRight.onmouseout = function() {
+					 startMove(oNext, {opacity: 0});
+				}
+				oPrev.onclick = function() {
+					//0 1 2 ... length-1
+					iNow--;
+					if(iNow==-1) {
+						iNow=0;
+					} else {
+						tab();
+					}
+				}
+				oNext.onclick = function() {
+					iNow++;
+					if(iNow==aSmallLi.length) {
+						iNow=aSmallLi.length-1;
+					} else {
+						tab();
+					}
+					
+				}
+				for(var i=0; i<aSmallLi.length; i++) {
+					aSmallLi[i].index = i;
+					aSmallLi[i].onmouseover = function() {
+						startMove(this, {opacity: 100});
+					}
+					aSmallLi[i].onmouseout = function() {
+						if(iNow != this.index) {
+							startMove(this, {opacity: 60});
+						}
+					}
+					aSmallLi[i].onclick = function() {
+						if(iNow == this.index) return false;
+						iNow = this.index;
+						tab();
+					}
+				}
+				function tab() {
+					for(var i=0; i<aSmallLi.length; i++) {
+						startMove(aSmallLi[i], {opacity: 60});
+					}
+					startMove(aSmallLi[iNow], {opacity: 100});
+					aBigLi[iNow].style.zIndex = iZindex++;
+					aBigLi[iNow].style.height = 0;
+					startMove(aBigLi[iNow], {height: oBigUl.offsetHeight});
+					// iNow 0   1    2             3          4      n        m-1      m
+					// left 0   0    -1图片width   -2 width   -3     -(iNow-1)   -(m-2)   -(m-2)
+					if(iNow!=0&&iNow!=aSmallLi.length-1) {
+						startMove(oSmallUl, {left: -(iNow-1)*aSmallLi[0].offsetWidth});
+					}
+				}
+			}
+			function getByClass(oParent, sClass) {
+				var aResult = [];
+				var aEle = oParent.getElementsByTagName("*");
+				for(var i=0; i<aEle.length; i++) {
+					if(aEle[i].className.indexOf(sClass)!=-1) {
+						aResult.push(aEle[i]);
+					}
+				}
+				return aResult;
+			}
+		</script>
+	</head>
+	<body>
+		<div id="playimages" class="play">
+		    <ul class="big_pic">
+				<div class="prev"></div>
+				<div class="next"></div>
+
+				<div class="text">加载图片说明……</div>
+				<div class="length">计算图片数量……</div>
+				
+				<a class="mark_left" href="javascript:;"></a>
+				<a class="mark_right" href="javascript:;"></a>
+				<div class="bg"></div>
+				
+		        <li style="z-index:1;"><img src="img/1.jpg" /></li>
+		        <li><img src="img/2.jpg" /></li>
+		        <li><img src="img/3.jpg" /></li>
+		        <li><img src="img/4.jpg" /></li>
+		        <li><img src="img/5.jpg" /></li>
+		        <li><img src="img/6.jpg" /></li>
+		    </ul>
+		    <div class="small_pic">
+		        <ul style="width:780px;">
+		            <li style="filter: alpha(opacity:100); opacity: 1;"><img src="img/1.jpg" /></li>
+		            <li><img src="img/2.jpg" /></li>
+		            <li><img src="img/3.jpg" /></li>
+		            <li><img src="img/4.jpg" /></li>
+		            <li><img src="img/5.jpg" /></li>
+		            <li><img src="img/6.jpg" /></li>
+		        </ul>
+		    </div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无缝轮播</title>
+	<style type="text/css">
+		*{margin:0; padding:0;}
+		#container{width:605px; height:284px; border:1px solid black; position:relative; margin:100px auto; overflow:hidden;}
+		.box {height:284px; list-style:none; position:absolute; top:0; left:0;}
+		li { width:605px; height:284px; float:left; cursor: pointer}
+		.nav {width:100%; height:20px; padding:5px 0; position:absolute; bottom:0; background:black;}
+		.nav div {width:20px; height:20px; border-radius:10px; background:white; margin-left:10px; float:left; cursor: pointer;}
+		.nav div.active {background:red;}
+		.prev, .next {width:50px; height:50px; position:absolute; top:0; bottom:0; margin:auto 0; background:black; cursor: pointer; font:50px/50px "宋体"; color:white; text-align: center; opacity: 0.4;}
+		.next {right:0px;}
+	</style>
+	<script src="js/jquery-1.12.3.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			
+			var oDiv = $("#container");
+			var oUl = $(".box", oDiv);
+			var aLi = $("li", oUl);
+			var oNav = $(".nav", oDiv);
+			var aNav = $("div", oNav);
+			var oPrev = $(".prev", oDiv);
+			var oNext = $(".next", oDiv);
+			
+			var len = aLi.length;
+			//0 1 2 3 4 ... len-1
+			var iNow = 1;
+			var oFirst = aLi.first().clone();
+			var oLast = aLi.last().clone();
+			oUl.append(oFirst);
+			aLi.first().before(oLast);
+			len += 2;
+			oUl.width(aLi.first().outerWidth()*len);
+			oUl.css("left", -aLi.first().outerWidth());
+			
+			autoPlay();
+			function autoPlay() {
+				clearInterval(oDiv.timer);
+				oDiv.timer = setInterval(function() {
+					iNow++;
+					if(iNow==len) {
+						oUl.css("left", -aLi.first().outerWidth());
+						iNow = 2;
+					}
+					tab();
+				}, 2000)
+			}
+			
+			oPrev.click(function() {
+				iNow--;
+				if(iNow==-1) {
+					oUl.css("left", -(len-2)*aLi.first().outerWidth());
+					iNow = len-3;
+				}
+				tab();
+			})
+			oNext.click(function() {
+				iNow++;
+				if(iNow==len) {
+					oUl.css("left", -aLi.first().outerWidth());
+					iNow = 2;
+				}
+				tab();
+			})
+			
+			oDiv.mouseover(function() {
+				clearInterval(oDiv.timer);
+			})
+			oDiv.mouseout(function() {
+				autoPlay();
+			})
+
+			aNav.click(function() {
+				// iNow 0 1 2 3 ... len-2 len-1
+				// nav    0 1 2 ... len-1
+				iNow = $(this).index() + 1;  
+				tab();
+			})
+
+			function tab() {
+				aNav.removeClass();
+				var navIndex = 0;
+				// iNow       0 1 2 3 4 5 ... len-3 len-2 len-1
+			  // navIndex len-3 0 1 2 3 4 ... len-4 len-3 0
+			  	if(iNow==0) {
+			  		navIndex = len-3;
+			  	} else if(iNow==len-1) {
+			  		navIndex = 0;
+			  	} else {
+			  		navIndex = iNow-1;
+			  	}
+			  	aNav.eq(navIndex).addClass('active');
+			  	// iNow 0 1 2 3 4 5 ... len-2 len-1
+			  	// left 0 1  -iNow*aLi[0].offsetWidth
+			  	oUl.stop().animate({left: -iNow*aLi.first().outerWidth()})
+			}
+		})
+	</script>
+</head>
+<body>
+	<div id="container">
+		<ul class="box">
+			<li><img src="img/ad1.jpg" height="284" width="605"></li>
+			<li><img src="img/ad2.jpg" height="284" width="605"></li>
+			<li><img src="img/ad3.jpg" height="284" width="605"></li>
+			<li><img src="img/ad4.jpg" height="284" width="605"></li>
+			<li><img src="img/ad5.jpg" height="284" width="605"></li>
+			<li><img src="img/ad6.jpg" height="284" width="605"></li>
+		</ul>
+		<div class="nav">
+			<div class="active"></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="prev"><</div>
+		<div class="next">></div>
+	</div>
+</body>
+</html>

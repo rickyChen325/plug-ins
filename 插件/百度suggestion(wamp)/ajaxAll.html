@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ajaxAll</title>
+		<style>
+			.borderCol{
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 除ajax外 -->
+		<!-- <div id="msgBox">
+		</div> -->
+
+		<!-- ajax -->
+		<form>
+			<input type="text" name="userName" id="userName" value="" /><span></span>
+			<input type="password" name="pwd" id="pwd" value="" /><span></span>
+			<input type="submit" value="注册" id="submit"/>
+		</form>
+
+		<script src="js/jquery-1.12.3.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			//load()方法是jQuery中最为简单和常用的Ajax方法，能载入远程HTML代码并插入DOM中
+			//在load()方法中，无论Ajax请求是否成功，只要当请求完成（complete）后，回调函数（callback）就被触发
+
+			// $("#msgBox").load("html/outer.html");
+			 
+			// $("#msgBox").load("html/outer.html #ul2");
+			// $("#msgBox").load("html/outer.html", function() {
+			// 	alert("load不管是否成功，只要请求完就alert");
+			// });
+			// load坑  路径问题(以当前调用文件问路径查找)
+
+
+			// $.get("data/userName.json", function(data) {
+			// 	console.log(data.userName);
+			// })
+			//如果需要传递一些参数给服务器中的页面，那么可以使用$.get()或者$.post()方法
+			//$.get() 
+			//参数url  data（可选） callback（可选）载入成功时回调函数 type（可选）服务器端返回内容的格式包括xml、html、script、json、text和_default
+			//
+			//JSON的格式非常严格，构建的JSON文件必须完整无误，任何一个括号的不匹配或者缺少逗号，都会导致页面上的脚本终止运行，甚至还会带来其他更加严重的负面影响。比如，我们返回的数据都必须要有双引号，必须是：{ "userName" : "张三" }，而不能是：{ userName:"张三"}。
+			//登录判断当前用户是否存在，注册判断该用户名是否已存在
+			// $("#userName").blur(function(e) {
+			// 	// $.get("data/userName.json", {"userName": $(this).val()}, function(data) {
+			// 	// 	var names = data.userName;
+			// 	// 	for(var i = 0; i < names.length; i++) {
+			// 	// 		if($("#userName").val() == names[i]) {
+			// 	// 			alert("存在");
+			// 	// 			return false;
+			// 	// 		}
+			// 	// 	}
+			// 	// })
+			// 	// $.get("data1/user_get.php", {"username": $(this).val()}, function(data) {
+			// 	// 	console.log(data);
+			// 	// 	var result = JSON.parse(data);
+			// 	// 	if(result.status==0) {
+			// 	// 		alert("存在");
+			// 	// 		return false;
+			// 	// 	} else {
+			// 	// 		alert("不存在");
+			// 	// 	}
+			// 	// })
+			// })
+			 // $.get("data/products.json", function(msg){
+			 // 	console.log(msg);
+			 // 	var goods = msg;
+			 // 	for (var i in goods) {
+			 // 		// $("#msgBox").append("<div>"+goods[i].id+"</div>");
+			 // 		$("#msgBox").append("<div>"+goods[i].name+"</div>");
+			 // 		$("#msgBox").append("<div>"+goods[i].img+"</div>");
+			 // 		$("#msgBox").append("<div>"+goods[i].href+"</div>");
+			 // 		$("#msgBox").append("<div>"+goods[i].price+"</div>");
+			 // 	}	
+			 // });
+			 
+			// $.getJSON("data/products.json", function(data) {
+			// 	console.log(data);
+			// });
+
+			//$.post()
+			//GET请求会将参数跟在URL后进行传递post对用户不可见
+			//GET传输的数据有大小限制（通常不能大于2KB）而使用POST方式传递的数据量要比GET方式大得多（理论上不受限制）
+			// 提交数据的时候用post  获取都是用get
+			// $("form").submit(function() {
+			// 	$.post("data1/user_post.php", {username: $("#userName").val(), password: $("#pwd").val()}, function(data) {
+			// 		var result = JSON.parse(data);
+			// 		if(result.status==0) {
+			// 			alert("成功");
+			// 			return true;
+			// 		} else {
+			// 			alert("失败");
+			// 			return false;
+			// 		}
+			// 	})
+			// 	// return false;
+			// })
+			
+			//$.getScript()直接加载.js文件，JavaScript文件会自动执行。
+			// $.getScript("js/scriptDemo.js");
+			
+			//$.getJSON()用于加载JSON文件，与$.getScript()方法的用法相同。
+			// $.getJSON("data/data.json", {"userName":"fw","password":"123"}, function(msg){
+			//  	console.log(msg);
+			// });
+
+			// $.ajax()
+			// $.ajax({
+			// 	type: "get",
+			// 	url: "data/userName.json",
+			// 	async: false,
+			// 	success: function(data) {
+			// 		console.log(data);
+			// 		alert("我是ajax  Success里面的")
+			// 	}
+			// })
+			// alert("我是ajax下面的内容");
+
+// 			$("#submit").click(function(e) {
+// 				e.preventDefault();
+// 				$.ajax({
+// 					type:"get",
+// 					url:"data/userName.json",
+// //					async:false,//是否异步
+// 					data: {name: "zhangsan", pwd: "123"},
+// 					success:function(msg){
+// 						// console.log(msg)
+// 						var userNames = msg.userName;
+// 						var len = userNames.length;
+// 						for(var i = 0; i < len; i++) {
+// 							if (userNames[i] == $("#userName").val()) {
+// 								alert("此用户已存在！");
+// 								return false;
+// 							}
+// 						}
+// 						alert("我是ajaxsuccess")
+// 					}
+// 				})
+// 				alert("我是ajax后面的代码");
+// 			})
+			
+			 // $("#submit").click(function(e) {
+			 // 	e.preventDefault();
+			 // 	$.ajax({
+			 // 		type:"get",
+			 // 		url:"data/userName.json",
+			 // 		beforeSend:function(){
+			 // 			alert("beforeSend");
+			 // 		},
+			 // 		error:function(){
+			 // 			alert("请求出错");
+			 // 		},
+			 // 		success:function(msg){
+			 // 			alert("success");
+			 // 		},
+			 // 		complete:function(){
+			 // 			alert("请求完成");
+			 // 		}
+			 // 	});
+			 // })
+		</script>
+	</body>
+</html>

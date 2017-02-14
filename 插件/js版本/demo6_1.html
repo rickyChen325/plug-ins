@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>轮播图</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			img{
+				border: none;
+				/*text-decoration: none;*/
+			}
+			ul{
+				list-style: none;
+			}
+			.big-box{
+				width: 764px;
+				height: 360px;
+				margin: 0 auto;
+				position: relative;
+			}
+			.big-box .box{
+				width: 764px;
+				height: 360px;
+				overflow: hidden;
+				margin: 0 auto;
+				
+			}
+			.big-box .box .box-item{
+				opacity: 0;
+				filter: alpha(opacity=0);
+				position: absolute;
+			}
+			/*.big-box .box .box-item.active{
+				display: block;
+			}*/
+			.big-box .box .box-item.default{
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+			.controls{
+				width:164px;
+				position: absolute;
+				bottom:10px;
+				right: 20px;
+			}
+			ul li{
+				width: 20px;
+				height: 20px;
+				border: 3px solid #aaa;
+				border-radius: 13px;    
+				float: left;
+				cursor: pointer;
+				
+			}
+			ul li.active{
+				background-color: white;
+				
+			}
+			
+			ul li+li{
+				margin-left: 20px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="big-box" id="big_box">
+			<div class="box">
+				<div class="box-item active default">
+					<a href="###">
+						<img src="img/lbt/lbt01.jpg" alt="" />
+					</a>
+				</div>
+				<div class="box-item">
+					<a href="###">
+						<img src="img/lbt/lbt02.jpg" alt="" />
+					</a>
+				</div>
+				<div class="box-item">
+					<a href="###">
+						<img src="img/lbt/lbt03.jpg" alt="" />
+					</a>
+				</div>
+				<div class="box-item">
+					<a href="###">
+						<img src="img/lbt/lbt04.jpg" alt="" />
+					</a>
+				</div>
+			
+			</div>
+			<div class="controls">
+				<ul>
+					<li class="active"></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>			
+		</div>
+		<div class="big-box" id="big_box1">
+			<div class="box">
+				<div class="box-item active default">
+					<a href="###">
+						<img src="img/lbt/lbt02.jpg" alt="" />
+					</a>
+				</div>
+				<div class="box-item">
+					<a href="###">
+						<img src="img/lbt/lbt03.jpg" alt="" />
+					</a>
+				</div>
+				<div class="box-item">
+					<a href="###">
+						<img src="img/lbt/lbt04.jpg" alt="" />
+					</a>
+				</div>
+			
+			</div>
+			<div class="controls">
+				<ul>
+					<li class="active"></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>			
+		</div>
+		<script src="move.js"></script>
+		<script>
+			var oDiv = document.getElementById("big_box");
+			var oDiv1 = document.getElementById("big_box1");
+			lunBoFade(oDiv, 2000);
+			lunBoFade(oDiv1, 1000);
+			
+			function lunBoFade(oContainer, intervalTime) {
+				var aDiv = oContainer.getElementsByTagName("div")[0].getElementsByTagName("div");
+				var aLi = oContainer.getElementsByTagName("li");  //获取所有的li控制节点对象
+				var iNow = 0;  //当前显示图片项和控制按钮项的索引
+
+				//循环遍历为每一个li注册事件
+				for(var i=0; i<aLi.length; i++){
+					aLi[i].index = i;
+					aLi[i].onmouseover = function(){
+						iNow = this.index;
+						tab();
+					}
+				}
+				autoPlay();
+				
+				/*自动播放*/
+				function autoPlay(){
+					clearInterval(oContainer.timer);
+					oContainer.timer = setInterval(function(){
+						iNow++;
+						iNow %= aLi.length;  //控制索引范围
+						tab();
+					},intervalTime);
+				}
+				/*改变和当前索引对应li节点和boxItem节点的状态*/
+				function tab(){
+					for(var i=0; i<aLi.length; i++){
+						aLi[i].className = "";
+						startMove(aDiv[i], {opacity: 0});
+					}
+					//为当前的控制按钮添加背景色
+					aLi[iNow].className = "active";
+					startMove(aDiv[iNow], {opacity:100})
+				}
+				
+				oContainer.onmouseenter = function(){
+					clearInterval(oContainer.timer)
+				}
+				
+				oContainer.onmouseleave = function(){
+					autoPlay();
+				}
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<select id="Cont"></select>
+		<select id="City" disabled="true"></select>
+		<select id="Sent" disabled="true"></select>
+		
+		<script type="text/javascript">
+			var oCont =document.getElementById('Cont');
+			var oCity =document.getElementById('City');
+			var oSent =document.getElementById('Sent');
+			
+			var contArr = [{'id':'1','name':'北京'},{'id':'2','name':'上海'},{'id':'3','name':'深圳'}, {'id':'4','name':'四川省'}];
+			var html = '<option>---请选择省份---</option>';
+			for(var i=0;i<contArr.length;i++){
+				html += '<option value='+contArr[i].id+'>'+contArr[i].name+'</option>';
+			};
+			oCont.innerHTML = html;
+			
+			var city = {'1':['101#北京'],
+						'2':['201#上海市','202#上海市1'],
+						'3':['301#深圳市'],
+						'4':['401#成都市','402#绵阳市','403#自贡市']
+						};
+			oCont.onchange = function(){
+				var val = oCont.value;
+				oSent.disabled = true;
+				//alert( val );
+				var html = '<option>---请选择城市---</option>';
+				var cityArr = city[val];
+				for( var i=0;i<cityArr.length;i++ ){
+					var citySp = cityArr[i].split('#');
+					html += '<option value='+citySp[0]+'>'+citySp[1]+'</option>';
+				}
+				oCity.innerHTML = html;
+				oCity.disabled = false;
+			}
+			var sent = {'101':['朝阳区','海淀区','大兴区','沙河区'],
+						'201':['朝阳区1','海淀区1','大兴区1','沙河区1'],
+						'202':['朝阳区2','海淀区2','大兴区2','沙河区2'],
+						'301':['深圳1','深圳2','深圳3'],
+						'401':['青羊区','锦江区','金牛区']
+						}
+			oCity.onchange = function(){
+				var val = oCity.value;
+				var html = '<option>---请选择区---</option>';
+				var sentArr = sent[val];
+				for(var i=0;i<sentArr.length;i++){
+					html += '<option>'+sentArr[i]+'</option>';
+				};
+				oSent.innerHTML = html;
+				oSent.disabled = false;
+			};
+		</script>
+	</body>
+</html>

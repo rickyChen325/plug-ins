@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+	<head>
+		<title>百度搜索框原理</title>
+		<meta charset="utf-8"/>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 300px;
+				position: relative;
+				margin: 20px auto;
+			}
+			#box input{
+				width: 300px;
+				height: 40px;
+				padding: 5px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				font-size: 16px;
+			}
+			#box div{
+				width: 312px;
+				position: absolute;
+				left: 0;
+				top: 54px;
+				border: 1px solid #aaa;
+				border-top: 0;
+				border-bottom: 0;
+			}
+			#box div ul li{
+				list-style: none;
+				padding: 8px;
+				color: gray;
+				border-bottom: 1px solid gray;
+				cursor: pointer;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery-1.12.3.js"></script>
+		<script>			
+			// window.onload = function() {
+			// 	var oInput = document.getElementById("searchInput");
+			// 	oInput.onkeyup = function() {
+			// 		var oScript = document.createElement("script");
+			// 		oScript.src = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+oInput.value+"&json=1&p=3&cb=suggestion&t";
+			// 		document.body.appendChild(oScript);
+			// 	}
+			// }
+			// function suggestion(data) {
+			// 	// console.log(data);
+			// 	// console.log(typeof data);
+			// 	var lists = data.g;
+			// 	var oUl = document.getElementById("tipList");
+			// 	oUl.innerHTML = "";
+			// 	for(var i in lists) {
+			// 		var oLi = document.createElement("li");
+			// 		oLi.innerHTML = lists[i].q;
+			// 		oUl.appendChild(oLi);
+			// 	}
+			// }			
+			
+			// $(window).load(function() {
+			// 	var oInput = $("#searchInput");
+			// 	oInput.keyup(function() {
+			// 		$.ajax({
+			// 			url: "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+oInput.val()+"&json=1&p=3",
+			// 			dataType: "jsonp",
+			// 			jsonp: "cb",
+			// 			success: function(data) {
+			// 				var lists = data.g;
+			// 				var oUl = $("#tipList");
+			// 				oUl.html("");
+			// 				for(var i in lists) {
+			// 					var oLi = $("<li></li>");
+			// 					oLi.html(lists[i].q);
+			// 					oUl.append(oLi);
+			// 				}
+			// 			}
+			// 		})
+			// 	})
+			// })
+
+
+			// $(function() {
+			// 	var oInput = $("#searchInput");
+			// 	oInput.keyup(function() {
+			// 		$.ajax({
+			// 			url: "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+oInput.val()+"&json=1&p=3&t",
+			// 			dataType: "jsonp",
+			// 			jsonp: "cb",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+   //           			// jsonpCallback:"flightHandler",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
+   //           			success: function(data) {
+   //           				console.log(data);
+   //           			}
+			// 		})
+			// 	})
+			// })
+		</script> 
+	</head>
+	<body>
+		<div id="box">
+			<input type="text" id="searchInput" placeholder="请输入搜索内容：">
+			<div id="tip">
+				<ul id="tipList">
+					<!-- <li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li> -->
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

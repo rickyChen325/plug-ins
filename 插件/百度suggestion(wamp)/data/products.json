@@ -1,0 +1,37 @@
+{
+	"g0": {
+		"id": 0,
+		"name": "臻美萱 无袖撞色连衣裙 160308059 图片色",
+		"img": "../images/products/big_img1.jpg",
+		"href": "detailProduct0.html",
+		"price": 149
+	},
+	"g1": {
+		"id": 1,
+		"name": "臻美萱 无袖撞色连衣裙 160308059 图片色",
+		"img": "img/1.jpg",
+		"href": "detailProduct0.html",
+		"price": 249
+	},
+	"g2": {
+		"id": 2,
+		"name": "臻美萱 无袖撞色连衣裙 160308059 图片色",
+		"img": "../images/products/big_img3.jpg",
+		"href": "detailProduct0.html",
+		"price": 349
+	},
+	"g3": {
+		"id": 3,
+		"name": "臻美萱 无袖撞色连衣裙 160308059 图片色",
+		"img": "../images/products/big_img4.jpg",
+		"href": "detailProduct0.html",
+		"price": 449
+	},
+	"g4": {
+		"id": 4,
+		"name": "臻美萱 无袖撞色连衣裙 160308059 图片色",
+		"img": "../images/products/big_img5.jpg",
+		"href": "detailProduct0.html",
+		"price": 49
+	}
+}

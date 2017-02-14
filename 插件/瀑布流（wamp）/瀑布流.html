@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>瀑布流</title>
+		<style>
+				* {
+					margin: 0;
+					padding: 0;
+				}
+				#box {
+					width: 1024px;
+					margin: 0 auto;/*版心布局*/
+				}
+				.list {
+					width: 250px;
+					padding: 3px;
+					float: left;
+				}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div class="list"></div>
+			<div class="list"></div>
+			<div class="list"></div>
+			<div class="list"></div>                                                                                                                               
+		</div>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<script type="text/javascript">
+			window.onload=function(){
+				getWaterFall();
+
+				window.onscroll=function(){
+					var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+					var clientHeight=document.documentElement.clientHeight||document.body.clientHeight;
+					if (scrollTop+clientHeight>=getMinHeight()[1]) {
+						getWaterFall();
+					}
+				}
+				var aList=document.getElementsByClassName("list");
+				function getWaterFall(){
+					ajax({
+						url:"data/json1.json",
+						success:function(data){
+							var result=JSON.parse(data);
+							for(var i in result){
+								var oImg=document.createElement("img");
+								oImg.style.width="250px";
+								oImg.style.height=result[i].height;
+								oImg.src=result[i].src;
+								var index=getMinHeight()[0];
+								aList[index].appendChild(oImg);
+							}
+						}
+					})
+				}
+				function getMinHeight(){
+					var aList=document.getElementsByClassName("list");
+				
+					var result=[];
+					var minHeight=0,minIndex=0;
+					for(var i=0;i<aList.length;i++){
+						var childs=aList[i].children;
+						var heightSum=0;
+						for(var j=0;j<childs.length;j++){
+							heightSum+=parseInt(getStyle(childs[j],"height"));
+						}
+						result.push(heightSum);
+					}
+					
+
+					minHeight=result[0]
+					for(var i=0;i<result.length;i++){
+						if (minHeight>result[i]) {
+							minHeight=result[i];
+							minIndex=i;
+						}
+					}
+					return [minIndex,minHeight]
+				}
+
+			}
+			function $(id){
+				return document.getElementById(id);
+			}
+			function getStyle(obj, name) {
+				if(window.getComputedStyle) {
+					return getComputedStyle(obj, null)[name];
+				} else {
+					return obj.currentStyle[name];
+				}
+			}
+		</script> 
+	</body>
+</html>

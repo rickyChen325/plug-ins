@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>电商网站楼梯</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#loutiNav{
+			width: 30px;
+			position: fixed;
+			top: 25%;
+			left: 40px;
+			/*left: 50%;
+			margin-left: 550px;*/
+			border: 1px solid #000;
+		}
+		#loutiNav ul li{
+			width: 30px;
+			height: 30px;
+			position: relative;
+			text-align: center;
+			line-height: 30px;
+			list-style: none;
+			cursor: pointer;
+			font-size: 12px;
+			border-bottom: 1px dotted #aaa;
+		}
+		#loutiNav ul li span{
+			width: 30px;
+			height: 30px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			color: red;
+			background: #fff;
+			display: none;
+		}
+		#loutiNav ul li:hover span{
+			display: block;
+			color: #fff;
+			background: darkred;
+		}
+		#loutiNav ul li span.active{
+			display: block;
+			color: red;
+			background: #fff;
+		}
+		#header, #footer, #main{
+			width: 1000px;
+			margin: 0 auto;
+			font-size: 40px;
+			font-weight: bold;
+			text-align: center;
+		}
+		#header, #footer{
+			height: 300px;
+			line-height: 300px;
+			background: darkcyan;
+		}
+		#main div{
+			height: 500px;
+			line-height: 500px;
+		}
+	</style>
+</head>
+<body>
+	<div id="loutiNav">
+		<ul>
+			<li>1F<span>服装</span></li>
+			<li>2F<span>美妆</span></li>
+			<li>3F<span>家电</span></li>
+			<li>4F<span>手机</span></li>
+			<li>5F<span>数码</span></li>
+			<li>6F<span>运动</span></li>
+			<li>7F<span>居家</span></li>
+			<li>8F<span>母婴</span></li>
+			<li>9F<span>食品</span></li>
+			<li>10F<span>图书</span></li>
+			<li>11F<span>服务</span></li>
+		</ul>
+	</div>
+	<div id="header">头部</div>
+	<!-- cc0033 999933 ccff33 006633 6666cc ff6600 ffff00 3333ff ff00cc 669900 ff66cc-->
+	<div id="main">
+		<div class="louti1" style="background: #669900;">aaa</div>
+		<div class="louti1" style="background: #ff66cc;">bbb</div>
+		<div class="louti" style="background: #cc0033;">1F服装</div>
+		<div class="louti" style="background: #999933;">2F美妆</div>
+		<div class="louti" style="background: #ccff33;">3F家电</div>
+		<div class="louti" style="background: #006633;">4F手机</div>
+		<div class="louti" style="background: #6666cc;">5F数码</div>
+		<div class="louti" style="background: #ff6600;">6F运动</div>
+		<div class="louti" style="background: #ffff00;">7F居家</div>
+		<div class="louti" style="background: #3333ff;">8F母婴</div>
+		<div class="louti" style="background: #ff00cc;">9F食品</div>
+		<div class="louti" style="background: #669900;">10F图书</div>
+		<div class="louti" style="background: #ff66cc;">11F服务</div>
+	</div>
+	<div id="footer">尾部</div>
+	<script src="js/jquery-1.12.3.js"></script>
+	<script>
+		var isClick = false;//是否是点击  true是点击  false不是
+		$("#loutiNav ul li").click(function(){ 
+			isClick = true;
+			$(this).find("span").addClass("active").parent().siblings().find("span").removeClass("active");
+			var iTop = $(".louti").eq($(this).index()).offset().top;
+			$("html, body").stop().animate({scrollTop: iTop}, 500, function() {
+				isClick = false;
+			});
+		})
+		$(window).scroll(function() {
+			if(!isClick){
+				var iScrollTop = $(this).scrollTop();
+				$(".louti").each(function() {
+					// if(iScrollTop>=$(this).offset().top) {
+					if(iScrollTop>=$(this).offset().top-$(this).prev().outerHeight()/2) {
+						$("#loutiNav ul li").eq($(this).index(".louti")).find("span").addClass("active").parent().siblings().find("span").removeClass("active");
+					}
+				})
+			}
+		});
+	</script>
+</body>
+</html>

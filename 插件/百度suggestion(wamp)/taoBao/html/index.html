@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!-- 重置样式 -->
+    <link type="text/css" href="../css/common/reset.css">
+    <!-- 公用的样式 -->
+    <link type="text/css" href="../css/common/common.css">
+	<!-- 自己的样式 -->
+    <link type="text/css" href="../css/index.css">
+</head>
+<body>
+	<!-- 这里是头部 -->
+	<div id="header"></div>
+	<!-- 这里是内容 -->
+	<div id="container">内容</div>
+	<!-- 这里是尾部 -->
+	<div id="footer"></div>
+	<script src="../lib/jquery-1.12.3.js"></script>
+	<script src="../js/common/common.js"></script>
+	<script>
+		loadHtml("common/header.html", "#header");
+		loadHtml("common/footer.html", "#footer");
+	</script>
+
+	<script src="../js/index.js"></script>
+</body>
+</html>

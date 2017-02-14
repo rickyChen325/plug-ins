@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>jQ选项卡</title>
+		<style>
+			.div input {
+				background: #CCC;
+				cursor: pointer;
+			}
+			.div input.active {
+				background: yellow;
+			}
+			.div div {
+				width: 200px; 
+				height: 200px; 
+				background: #CCC; 
+				display: none;
+			}
+			.div div.active {
+				display: block;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery-1.12.3.js"></script>
+		<script>
+			// 面向过程改成面向对象
+			// 1、前提：所有东西都在onload里面
+			// 2、不允许有函数嵌套，但允许有全局变量
+			// 3、onload    构造函数
+			// 	  全局变量  属性   this.   首先你要看已经存在的this一会要处理
+			// 	  函数      方法   对象.prototype.
+			// 	  处理写死的东西，当成参数传递
+			// 	  解决事件绑定this指向问题
+			// 	  方法需要对象调，但里面的需要事件对象调，将事件对象当参数传递
+			/*
+			//面对过程
+			window.onload = function () {
+				var oDiv1=document.getElementById("div1");
+				var aBtn=oDiv1.getElementsByTagName("input");
+				var aDiv=oDiv1.getElementsByTagName("div");
+				for(var i=0;i<aBtn.length;i++){
+					aBtn[i].index=i;
+					aBtn[i].onclick=function(){
+						
+						for(var i=0;i<aBtn.length;i++){
+							aBtn[i].className="";
+							aDiv[i].style.display="none";
+						}
+						this.className="active";
+						aDiv[this.index].style.display="block";
+					}
+				}
+			}
+			*/
+			
+			$(function(){
+				/*
+				$("input").each(function(){
+					$(this).click(function(){					
+						$(this).addClass('active').siblings("input").removeClass('active');
+						$("#div1 div").eq($("input").index(this)).addClass("active").siblings("div").removeClass("active");
+					})
+				})
+				*/
+				var oDiv = $("#div1");
+				var aBtn = $("#div1 input");
+				var aDiv = $("#div1 div");
+				aBtn.click(function() {
+					// aBtn.removeClass("active");
+					// aDiv.hide();
+					// $(this).addClass("active");
+					// aDiv.eq($(this).index("input")).show();
+					
+					$(this).addClass("active").siblings("input").removeClass("active");
+					aDiv.eq($(this).index("input")).show().siblings("div").hide();
+				})
+
+			})
+
+		</script>
+	</head>
+
+	<body>
+		<div id="div1" class="div">
+			<input class="active" type="button" value="1606" />
+			<input type="button" value="1607" />
+			<input type="button" value="1608" />
+			<div class="active">1606</div>
+			<div>1607</div>
+			<div>1608</div>
+		</div>
+	</body>
+</html>

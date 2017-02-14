@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>中心放大，解决层级问题</title>
+		<style>
+			* {margin:0; padding:0;}
+			#ul1 {width:366px; margin:0 auto; position:relative;}
+			#ul1 li {list-style:none; width:100px; height:100px; background:#CCC; border:1px solid black; float:left; margin:10px;}
+		</style>
+		<script src="move.js"></script>
+		<script>
+			window.onload = function() {
+				// css 布局ul li float简单，但是鼠标移上变大会挤掉其他的，position: absolute不会
+				// js更喜欢absolute
+				// 解决方法，用float定位，js一开始就自适应布局转换
+				var oUl = document.getElementById("ul1");
+				var aLi = oUl.getElementsByTagName("li");
+				var iZindex = 2;//设置最开始最小zIndex=2，最大值integer最大值2^31，太大了
+				for(var i=0; i<aLi.length; i++) {
+					aLi[i].style.left = aLi[i].offsetLeft + "px";//考虑了margin
+					aLi[i].style.top = aLi[i].offsetTop + "px";
+					// 直接设定位，第一个设了，其他的会往前挤，都是第一个，
+					// 解决方法都设置完left、top之后再设置定位
+				}
+				for(var i=0; i<aLi.length; i++) {
+					aLi[i].style.position = "absolute";
+					//已经考虑margin了，去掉原有margin
+					aLi[i].style.margin = 0;
+					aLi[i].onmouseover = function() {
+						// this.style.zIndex = 2;
+						this.style.zIndex = iZindex++;//鼠标移入，当前zIndex最大
+						startMove(this, {width: 200, height: 200, marginLeft: -50, marginTop: -50});
+					}
+					aLi[i].onmouseout = function() {
+						// this.style.zIndex = 1;
+						startMove(this, {width: 100, height: 100, marginLeft: 0, marginTop: 0});
+					}
+				}
+			}
+ 		</script>
+	</head>
+	<body>
+		<ul id="ul1">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</body>
+</html>

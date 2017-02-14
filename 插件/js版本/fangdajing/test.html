@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>放大镜</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<script>
+			window.onload = function() {
+				var oDiv = $("box");
+				var oMiddleImgBox = getByClass(oDiv, "middle-img-box")[0];
+				var oMiddleImg = getByClass(oDiv, "middle-img")[0];
+				var oImageZoom = getByClass(oDiv, "image-zoom")[0];
+				var oBigImgBox = getByClass(oDiv, "big-img-box")[0];
+				var oBigImg = getByClass(oDiv, "big-img")[0];
+				var oSmallImgBox = getByClass(oDiv, "small-img-box")[0];
+				var aSmallImg = oSmallImgBox.getElementsByTagName("img");
+
+				for(var i=0; i<aSmallImg.length; i++) {
+					aSmallImg[i].onmouseover = function() {
+						for(var i=0; i<aSmallImg.length; i++) {
+							aSmallImg[i].className = "";
+						}
+						this.className = "active";
+						oMiddleImg.src = this.src;
+						oBigImg.src = this.src;
+					}
+				}
+				oMiddleImgBox.onmouseover = function() {
+					oImageZoom.style.display = "block";
+					oBigImgBox.style.display = "block";
+				}
+				oMiddleImgBox.onmouseout = function() {
+					oImageZoom.style.display = "none";
+					oBigImgBox.style.display = "none";
+				}
+				oMiddleImgBox.onmousemove = function(evt) {
+					var e = evt || window.event;
+					var iScrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+					var iScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					var iLeft = iScrollLeft + e.clientX - oImageZoom.offsetWidth/2 - position(oMiddleImgBox).left;
+					var iTop = iScrollTop + e.clientY - oImageZoom.offsetHeight/2 - position(oMiddleImgBox).top;
+					var iMaxLeft = oMiddleImgBox.offsetWidth - oImageZoom.offsetWidth;
+					var iMaxTop = oMiddleImgBox.offsetHeight - oImageZoom.offsetHeight;
+					if(iLeft<0) {
+						iLeft = 0;
+					} else if(iLeft>iMaxLeft) {
+						iLeft = iMaxLeft;
+					}
+					if(iTop<0) {
+						iTop = 0;
+					} else if(iTop>iMaxTop) {
+						iTop = iMaxTop;
+					}
+					oImageZoom.style.left = iLeft + "px";
+					oImageZoom.style.top = iTop + "px";
+					//  iLeft/iMaxLeft
+					oBigImg.style.left = -iLeft/iMaxLeft*(oBigImg.offsetWidth-oBigImgBox.offsetWidth) + "px";
+					oBigImg.style.top = -iTop/iMaxTop*(oBigImg.offsetHeight-oBigImgBox.offsetHeight) + "px";
+				}
+			}
+			function position(obj) {
+				var oPos = {left: 0, top: 0};
+				while(obj) {
+					oPos.left += obj.offsetLeft + parseInt(getStyle(obj, "borderLeftWidth"));
+					oPos.top += obj.offsetTop + parseInt(getStyle(obj, "borderTopWidth"));
+					obj = obj.offsetParent;
+				}
+				return oPos;
+			}
+			function getByClass(oParent, sClass) {
+				var aEle = oParent.getElementsByTagName("*");
+				var aResult = [];
+				for(var i=0; i<aEle.length; i++) {
+					if(aEle[i].className == sClass) {
+						aResult.push(aEle[i]);
+					}
+				}
+				return aResult;
+			}
+			function getStyle(obj, name) {
+				if(window.getComputedStyle) {
+					return getComputedStyle(obj)[name];
+				} else {
+					return obj.currentStyle[name];
+				}
+			}
+			function $(id) {
+				return document.getElementById(id);
+			}
+		</script>
+	</head>
+	<body style="height: 2000px; width: 10000px;">
+		<div id="box">
+			<div class="middle-img-box">
+				<img src="images/1.jpg" class="middle-img"/>
+				<div class="image-zoom"></div>
+			</div>
+			<div class="big-img-box">
+				<img src="images/1.jpg" class="big-img"/>
+			</div>
+			<ul class="small-img-box">
+				<li><a href="##"><img src="images/1.jpg" alt="" class="active"/></a></li>
+				<li><a href="##"><img src="images/2.jpg" alt=""/></a></li>
+				<li><a href="##"><img src="images/3.jpg" alt=""/></a></li>
+				<li><a href="##"><img src="images/4.jpg" alt=""/></a></li>
+				<li><a href="##"><img src="images/5.jpg" alt=""/></a></li>
+			</ul>
+		</div>
+	</body>
+</html>
